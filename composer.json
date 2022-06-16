@@ -1,0 +1,27 @@
+{
+    "name": "danilocgsilva/database-spread-cli",
+    "description": "CLI entrance for database-spread project consumption data",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Danilocgsilva\\DatabaseSpreadCli\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Danilo Carlos",
+            "email": "contact@danilocgsilva.me"
+        }
+    ],
+    "repositories": [
+        {
+            "name": "danilocgsilva/database-spread",
+            "type": "git",
+            "url": "git@github.com:danilocgsilva/database-spread.git"
+        }
+    ],
+    "require": {
+        "danilocgsilva/database-spread": "dev-develop"
+    }
+}
