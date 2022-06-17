@@ -22,5 +22,5 @@ function printLine(string $content)
 printLine("Here the job will be done!");
 
 foreach ($databaseSpread->getTables() as $table) {
-    printLine($table);
+    printLine((string) $table);
 }
