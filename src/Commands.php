@@ -21,7 +21,7 @@ class Commands
 
     function getTablesWithSizes() {
         foreach ($this->databaseSpread->getTablesWithSizes() as $table) {
-            printLine((string) $table . ": " . $table->getSize());
+            printLine($table->getName() . ": " . $table->getSize());
         }
     }
 }
