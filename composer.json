@@ -6,7 +6,8 @@
     "autoload": {
         "psr-4": {
             "Danilocgsilva\\DatabaseSpreadCli\\": "src/"
-        }
+        },
+        "files": ["src/functions.php"]
     },
     "authors": [
         {
