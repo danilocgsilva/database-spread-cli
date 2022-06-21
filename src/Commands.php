@@ -19,9 +19,17 @@ class Commands
         }
     }
 
-    function getTablesWithSizes() {
+    public function getTablesWithSizes(): void
+    {
         foreach ($this->databaseSpread->getTablesWithSizes() as $table) {
-            printLine($table->getName() . ": " . $table->getSize());
+            printLine($table->getName() . ", size: " . $table->getSize() . " bytes");
+        }
+    }
+
+    public function getFields(string $field): void
+    {
+        foreach ($this->databaseSpread->getFields($field) as $field) {
+            printLine($field->getName());
         }
     }
 }

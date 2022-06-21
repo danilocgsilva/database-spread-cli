@@ -17,8 +17,14 @@ if (!isset($argv[1])) {
     exit();
 }
 
-$pdo = new PDO(sprintf('mysql:host=%s;dbname=%s', $_ENV['HOST'], $_ENV['NAME']), $_ENV['USER'], $_ENV['PASS']);
+try {
+    $pdo = new PDO(sprintf('mysql:host=%s', $_ENV['HOST']), $_ENV['USER'], $_ENV['PASS']);
+} catch (PDOException $e) {
+    print("Error. Check database connection.\n");
+    exit();
+}
 $databaseSpread = new DatabaseSpread($pdo);
+$databaseSpread->setDatabaseName($_ENV['NAME']);
 $command = new Commands($databaseSpread);
 
 if ($argv[1] === "get_tables") {
@@ -31,5 +37,9 @@ if ($argv[1] === "get_tables_with_sizes") {
     exit();
 }
 
-printLine("You have provided an unknown argument.");
+if ($argv[1] === "get_fields") {
+    $command->getFields($argv[2]);
+    exit();
+}
 
+printLine("You have provided an unknown argument.");

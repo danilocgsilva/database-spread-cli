@@ -4,15 +4,15 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "916a7ee125156f1f0bdd990204fd09f1",
+    "content-hash": "baf57e6cf8bda2f6bf9e8b9e25cc0c06",
     "packages": [
         {
             "name": "danilocgsilva/database-spread",
-            "version": "0.2.7",
+            "version": "0.2.12.3",
             "source": {
                 "type": "git",
                 "url": "git@github.com:danilocgsilva/database-spread.git",
-                "reference": "cc048dd1cc61386c438f23cc0fe971851ace1f27"
+                "reference": "d652ce1fdcbb90551671852328820bf088efbbdc"
             },
             "require-dev": {
                 "phpunit/phpunit": "^9.5"
@@ -32,7 +32,7 @@
                 }
             ],
             "description": "Analyses database structure and data",
-            "time": "2022-06-17T19:38:06+00:00"
+            "time": "2022-06-21T01:45:49+00:00"
         },
         {
             "name": "graham-campbell/result-type",
