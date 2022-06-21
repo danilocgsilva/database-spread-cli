@@ -38,7 +38,7 @@ if ($argv[1] === "get_tables_with_sizes") {
 }
 
 if ($argv[1] === "get_fields") {
-    $command->getFields($argv[2]);
+    $command->getFields($argv[2] ?? null);
     exit();
 }
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
+use TYield;
 
 class Commands
 {
@@ -26,10 +27,34 @@ class Commands
         }
     }
 
-    public function getFields(string $field): void
+    public function getFields(?string $table): void
     {
-        foreach ($this->databaseSpread->getFields($field) as $field) {
+        if ($table) {
+            $this->getFieldsFromTable($table);
+        } else {
+            $this->getFieldsFromAllTables();
+        }
+    }
+
+    private function getFieldsFromTable(string $table): void
+    {
+       foreach ($this->databaseSpread->getFields($table) as $field) {
             printLine($field->getName());
+        }
+    }
+
+    private function getFieldsFromAllTables(): void
+    {
+        foreach ($this->databaseSpread->getTables() as $table) {
+            $this->printTableDataForSingleTable($table);
+        }
+    }
+
+    private function printTableDataForSingleTable($table): void
+    {
+        printLine("Table: " . ($tableName = $table->getName()));
+        foreach ($this->databaseSpread->getFields($tableName) as $field) {
+            printLine(" * " . $field->getName());
         }
     }
 }
