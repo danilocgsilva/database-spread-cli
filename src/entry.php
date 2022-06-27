@@ -42,4 +42,9 @@ if ($argv[1] === "get_fields") {
     exit();
 }
 
+if ($argv[1] === "get_fields_details") {
+    $command->getFieldsWithDetails($argv[2] ?? null);
+    exit();
+}
+
 printLine("You have provided an unknown argument.");

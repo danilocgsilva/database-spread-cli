@@ -6,6 +6,7 @@ namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\DatabaseStructure\Field;
 use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
+use Danilocgsilva\DatabaseSpread\DatabaseStructure\Table;
 
 class Formatter
 {
@@ -27,9 +28,10 @@ class Formatter
         }
     }
 
-    public function getFieldsDetailsFromTable(string $table)
+    public function getFieldsDetailsFromTable(Table $table)
     {
-        foreach ($this->databaseSpread->getFields($table) as $field) {
+        print(printLine($tableName = $table->getName()));
+        foreach ($this->databaseSpread->getFields($tableName) as $field) {
             $this->fieldDetails($field);
         }
     }
@@ -48,7 +50,14 @@ class Formatter
 
     private function fieldDetails(Field $field): void
     {
-        printLine($field->getName() . ", " . $field->getType());
+        $stringToPrint = sprintf(
+            " * field name: %s, value type: %s, nullable?: %s, key: %s", 
+            $field->getName(), 
+            $field->getType(),
+            $field->getNull(),
+            $field->getKey() === "" ? "any" : $field->getKey(),
+        );
+        printLine($stringToPrint);
     }
 
     private function printTableDataForSingleTable($table): void
