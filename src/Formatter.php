@@ -5,9 +5,14 @@ declare(strict_types=1);
 namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\DatabaseStructure\Field;
+use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
 
 class Formatter
 {
+    public function __construct(
+        private DatabaseSpread $databaseSpread
+    ) {}
+    
     public function getFieldsFromTable(string $table): void
     {
         foreach ($this->databaseSpread->getFields($table) as $field) {
@@ -21,12 +26,30 @@ class Formatter
             $this->printTableDataForSingleTable($table);
         }
     }
-    
+
+    public function getFieldsDetailsFromTable(string $table)
+    {
+        foreach ($this->databaseSpread->getFields($table) as $field) {
+            $this->fieldDetails($field);
+        }
+    }
+
+    public function getFieldsDetailsFromAllTables(): void
+    {
+        foreach ($this->databaseSpread->getTables() as $table) {
+            $this->getFieldsDetailsFromTable($table);
+        }
+    }
+
     private function fieldName(Field $field): void
     {
         printLine($field->getName());
     }
 
+    private function fieldDetails(Field $field): void
+    {
+        printLine($field->getName() . ", " . $field->getType());
+    }
 
     private function printTableDataForSingleTable($table): void
     {
@@ -35,4 +58,6 @@ class Formatter
             printLine(" * " . $field->getName());
         }
     }
+
+
 }

@@ -9,10 +9,13 @@ use TYield;
 
 class Commands
 {
+    private Formatter $formatter;
+    
     public function __construct(
-        private DatabaseSpread $databaseSpread,
-        private Formatter $formatter
-    ) {}
+        private DatabaseSpread $databaseSpread
+    ) {
+        $this->formatter = new Formatter($databaseSpread);
+    }
 
     public function printTables(): void
     {
@@ -40,9 +43,9 @@ class Commands
     public function getFieldsWithDetails(?string $table): void
     {
         if ($table) {
-            $this->formatter->getFieldsFromTable($table);
+            $this->formatter->getFieldsDetailsFromTable($table);
         } else {
-            $this->formatter->getFieldsFromAllTables();
+            $this->formatter->getFieldsDetailsFromAllTables();
         }
     }
 }
