@@ -10,7 +10,8 @@ use TYield;
 class Commands
 {
     public function __construct(
-        private DatabaseSpread $databaseSpread
+        private DatabaseSpread $databaseSpread,
+        private Formatter $formatter
     ) {}
 
     public function printTables(): void
@@ -30,31 +31,18 @@ class Commands
     public function getFields(?string $table): void
     {
         if ($table) {
-            $this->getFieldsFromTable($table);
+            $this->formatter->getFieldsFromTable($table);
         } else {
-            $this->getFieldsFromAllTables();
+            $this->formatter->getFieldsFromAllTables();
         }
     }
 
-    private function getFieldsFromTable(string $table): void
+    public function getFieldsWithDetails(?string $table): void
     {
-       foreach ($this->databaseSpread->getFields($table) as $field) {
-            printLine($field->getName());
-        }
-    }
-
-    private function getFieldsFromAllTables(): void
-    {
-        foreach ($this->databaseSpread->getTables() as $table) {
-            $this->printTableDataForSingleTable($table);
-        }
-    }
-
-    private function printTableDataForSingleTable($table): void
-    {
-        printLine("Table: " . ($tableName = $table->getName()));
-        foreach ($this->databaseSpread->getFields($tableName) as $field) {
-            printLine(" * " . $field->getName());
+        if ($table) {
+            $this->formatter->getFieldsFromTable($table);
+        } else {
+            $this->formatter->getFieldsFromAllTables();
         }
     }
 }
