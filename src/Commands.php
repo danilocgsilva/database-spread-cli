@@ -17,6 +17,11 @@ class Commands
         $this->formatter = new Formatter($databaseSpread);
     }
 
+    /**
+     * Prints table from the selected database
+     *
+     * @return void
+     */
     public function printTables(): void
     {
         foreach ($this->databaseSpread->getTables() as $table) {
@@ -28,6 +33,20 @@ class Commands
     {
         foreach ($this->databaseSpread->getTablesWithSizes() as $table) {
             printLine($table->getName() . ", size: " . $table->getSize() . " bytes");
+        }
+    }
+
+    public function getTablesWithHeights(): void
+    {
+        foreach ($this->databaseSpread->getTablesWithHeights() as $tableHighed) {
+
+            print(
+                sprintf(
+                    "%s, height: %s lines", 
+                    $tableHighed->getName(), 
+                    $tableHighed->getHeight()
+                )
+            );
         }
     }
 
