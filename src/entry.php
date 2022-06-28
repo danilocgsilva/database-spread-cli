@@ -25,31 +25,29 @@ try {
 }
 $databaseSpread = new DatabaseSpread($pdo);
 $databaseSpread->setDatabaseName($_ENV['NAME']);
+
 $command = new Commands($databaseSpread);
 
-if ($argv[1] === "get_tables") {
-    $command->printTables();
-    exit();
+if (isset($argv[1])) {
+    switch ($argv[1]) {
+        case "get_tables":
+            $command->{"get_tables"}();
+            break;
+        case "get_tables_with_sizes":
+            $command->{"get_tables_with_sizes"}();
+            break;
+        case "get_tables_with_heights":
+            $command->{"get_tables_with_heights"}();
+            break;
+        case "get_fields":
+            $command->{"get_fields"}($argv[2] ?? null);
+            break;
+        case "get_fields_details":
+            $command->{"get_fields_details"}($argv[2] ?? null);
+            break;
+        default:
+            printLine("You have provided an unknown argument.");
+    }
+} else {
+    printLine("You need to provide an argument tellign what you want to do.");
 }
-
-if ($argv[1] === "get_tables_with_sizes") {
-    $command->getTablesWithSizes();
-    exit();
-}
-
-if ($argv[1] === "get_tables_with_heights") {
-    $command->getTablesWithHeights();
-    exit();
-} 
-
-if ($argv[1] === "get_fields") {
-    $command->getFields($argv[2] ?? null);
-    exit();
-}
-
-if ($argv[1] === "get_fields_details") {
-    $command->getFieldsWithDetails($argv[2] ?? null);
-    exit();
-}
-
-printLine("You have provided an unknown argument.");
