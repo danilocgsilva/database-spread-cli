@@ -37,6 +37,11 @@ if ($argv[1] === "get_tables_with_sizes") {
     exit();
 }
 
+if ($argv[1] === "get_tables_with_heights") {
+    $command->getTablesWithHeights();
+    exit();
+} 
+
 if ($argv[1] === "get_fields") {
     $command->getFields($argv[2] ?? null);
     exit();

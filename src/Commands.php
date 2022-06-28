@@ -40,9 +40,9 @@ class Commands
     {
         foreach ($this->databaseSpread->getTablesWithHeights() as $tableHighed) {
 
-            print(
+            printLine(
                 sprintf(
-                    "%s, height: %s lines", 
+                    "%s, height: %s rows", 
                     $tableHighed->getName(), 
                     $tableHighed->getHeight()
                 )

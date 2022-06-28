@@ -32,3 +32,8 @@ Get all fields from all databases, printing to the terminal:
 ```
 php src/entry.php get_fields
 ```
+
+Get all tables with the row count
+```
+php src/entry.php get_tables_with_heights
+```
