@@ -23,7 +23,7 @@
         }
     ],
     "require": {
-        "danilocgsilva/database-spread": "0.2.12.8",
+        "danilocgsilva/database-spread": "0.13",
         "vlucas/phpdotenv": "^5.4"
     }
 }
