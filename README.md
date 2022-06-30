@@ -10,22 +10,26 @@ Just clone the `.env.example` file to a file called `.env` and add the database 
 
 There are the following way to use this utility:
 
-* get all tables from a database
+Get all tables from a database
 
 ```
 php src/entry.php get_tables
 ```
 Prints table from the database.
 
----
-
-* get tables with its sizes
+Get tables with its sizes
 
 ```
 php src/entry.php get_tables_with_sizes
 ```
 
----
+You may want to print tables with its sizes in megabytes
+
+```
+php src/entry.php get_tables_with_sizes m
+```
+
+Using `mb` instead of `m` as second argument to choose sizes in megabytes is also valid.
 
 Get all fields from all databases, printing to the terminal:
 
@@ -41,4 +45,9 @@ php src/entry.php get_tables_with_heights
 Prints html code to browser display
 ```
 php src/entry.php get_tables_html
+```
+
+Prints html code to browser display, providing table sizes
+```
+php src/entry.php get_tables_html m
 ```

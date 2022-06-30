@@ -56,10 +56,12 @@ class Commands
      *
      * @return void
      */
-    public function get_tables_with_sizes(): void
+    public function get_tables_with_sizes(string $unit = null): void
     {
+        $converter = getHtmlConverter($unit);
+        
         foreach ($this->databaseSpread->getTablesWithSizes() as $table) {
-            printLine($table->getName() . ", size: " . $table->getSize() . " bytes");
+            printLine($table->getName() . ", size: " . $converter($table->getSize()));
         }
     }
 
@@ -110,33 +112,5 @@ class Commands
         } else {
             $this->formatter->getFieldsDetailsFromAllTables();
         }
-    }
-
-    /**
-     * Prints tables list as static html code for browser display
-     *
-     * @return void
-     */
-    public function get_tables_html(): void
-    {
-        printLine(<<<EOD
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-
-    <ul>
-EOD);
-
-        foreach ($this->databaseSpread->getTables() as $table) {
-            printLine("        <li>" . (string) $table . "</li>");
-        }
-        
-        printLine("   <ul>\n\n</body>\n</html>\n");
     }
 }
