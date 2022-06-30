@@ -37,3 +37,8 @@ Get all tables with the row count
 ```
 php src/entry.php get_tables_with_heights
 ```
+
+Prints html code to browser display
+```
+php src/entry.php get_tables_html
+```

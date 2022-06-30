@@ -16,7 +16,8 @@ class Commands
         "get_tables_with_sizes" => "Prints tables with sizes.",
         "get_tables_with_heights" => "Print tables with its row count.",
         "get_fields" => "Show fields from a table or all tables. If need just to print fields from just one table, type a second argument beign the table name.",
-        "get_fields_details" => "Show fields with its details. If needs just to print details from just one table, type a second argumento beign the table name."
+        "get_fields_details" => "Show fields with its details. If needs just to print details from just one table, type a second argumento beign the table name.",
+        "get_tables_html" => "Prints html code for tables listing"
     ];
     
     public function __construct(
@@ -109,5 +110,33 @@ class Commands
         } else {
             $this->formatter->getFieldsDetailsFromAllTables();
         }
+    }
+
+    /**
+     * Prints tables list as static html code for browser display
+     *
+     * @return void
+     */
+    public function get_tables_html(): void
+    {
+        printLine(<<<EOD
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+
+    <ul>
+EOD);
+
+        foreach ($this->databaseSpread->getTables() as $table) {
+            printLine("        <li>" . (string) $table . "</li>");
+        }
+        
+        printLine("   <ul>\n\n</body>\n</html>\n");
     }
 }

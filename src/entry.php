@@ -29,7 +29,7 @@ $databaseSpread->setDatabaseName($_ENV['NAME']);
 $command = new Commands($databaseSpread);
 
 if (isset($argv[1])) {
-
+    
     match ($argv[1]) {
         "help" => $command->{"help"}(),
         "get_tables" => $command->{"get_tables"}(),
@@ -37,6 +37,9 @@ if (isset($argv[1])) {
         "get_tables_with_heights" => $command->{"get_tables_with_heights"}(),
         "get_fields" => $command->{"get_fields"}($argv[2] ?? null),
         "get_fields_details" => $command->{"get_fields_details"}($argv[2] ?? null),
+
+        "get_tables_html" => $command->{"get_tables_html"}($argv[2] ?? null),
+        
         default => printLine("You have provided an unknown argument.")
     };
 
