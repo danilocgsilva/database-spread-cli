@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
+use Danilocgsilva\DatabaseSpread\DatabaseStructure\Table;
 
 class Html
 {
@@ -27,6 +28,8 @@ class Html
             )
         );
 
+        print("\n    <ul>\n");
+
         foreach ($this->databaseSpread->getTables() as $table) {
             printLine("        <li>" . (string) $table . "</li>");
         }
@@ -47,10 +50,11 @@ class Html
         print(
             sprintf(
                 $this->getHeadHtmlTemplate(),
-                $this->databaseSpread->getDatabaseName(),
                 $this->databaseSpread->getDatabaseName()
             )
         );
+
+        print("<ul>\n");
 
         foreach ($this->databaseSpread->getTablesWithSizes() as $table) {
             $tableStringTemplate = sprintf(
@@ -64,6 +68,59 @@ class Html
         printLine("   <ul>\n\n</body>\n</html>\n");
     }
 
+    public function get_fields_html(?string $table): void
+    {
+        if (!$table) {
+            $this->printFieldsFromAllTables();
+        } else {
+            printLine(
+                sprintf(
+                    $this->getHeadHtmlTemplate(),
+                    $table
+                )
+            );
+            $this->printTableDataForSingleTableHtml($table);
+            printLine("</body>", 1);
+            printLine("</html>\n");
+        }
+    }
+
+    private function printFieldsFromAllTables()
+    {
+        printLine(
+            sprintf(
+                $this->getHeadHtmlTemplate(),
+                $this->databaseSpread->getDatabaseName()
+            )
+        );
+        
+        foreach ($this->databaseSpread->getTables() as $table) {
+            $this->printTableDataForSingleTableHtml($table->getName());
+        }
+
+        printLine("   <ul>\n\n</body>\n</html>\n");
+    }
+
+    private function printTableDataForSingleTableHtml(string $tableName)
+    {
+        printLine(sprintf("<h2>%s</h2>", $tableName), 2);
+
+        printLine("<ul>", 2);
+
+        $fieldTemplate = "<li>%s</li>";
+
+        foreach ($this->databaseSpread->getFields($tableName) as $field) {
+            printLine(
+                sprintf(
+                    $fieldTemplate,
+                    $field->getName()
+                )
+            , 3);
+        }
+
+        printLine("</ul>\n", 2);
+    }
+
     /**
      * Returns basic head html code template
      *
@@ -72,19 +129,15 @@ class Html
     private function getHeadHtmlTemplate(): string
     {
         return <<<EOD
-        <!DOCTYPE html>
-        <html lang="en">
-        <head>
-            <meta charset="UTF-8">
-            <meta http-equiv="X-UA-Compatible" content="IE=edge">
-            <meta name="viewport" content="width=device-width, initial-scale=1.0">
-            <title>%s</title>
-        </head>
-        <body>
-        
-            <h1>%s</h1>
-        
-            <ul>\n
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>%s</title>
+    </head>
+    <body>
 EOD;
     }
 }

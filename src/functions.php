@@ -2,9 +2,13 @@
 
 declare(strict_types=1);
 
-function printLine(string $content)
+function printLine(string $content, int $tabs = 0)
 {
-    print($content . "\n");
+    $startingSpace = "";
+    for ($i = 0; $i < $tabs; $i++) {
+        $startingSpace .= "    ";
+    }
+    print($startingSpace . $content . "\n");
 }
 
 function htmlByte(int $size): string

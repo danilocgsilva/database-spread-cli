@@ -9,34 +9,11 @@ use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
 class Commands
 {
     private Formatter $formatter;
-
-    private array $meta = [
-        "help" => "Prints possible options allowable.",
-        "get_tables" => "Prints all tables.",
-        "get_tables_with_sizes" => "Prints tables with sizes.",
-        "get_tables_with_heights" => "Print tables with its row count.",
-        "get_fields" => "Show fields from a table or all tables. If need just to print fields from just one table, type a second argument beign the table name.",
-        "get_fields_details" => "Show fields with its details. If needs just to print details from just one table, type a second argumento beign the table name.",
-        "get_tables_html" => "Prints html code for tables listing"
-    ];
     
     public function __construct(
         private DatabaseSpread $databaseSpread
     ) {
         $this->formatter = new Formatter($databaseSpread);
-    }
-
-    public function help(): void
-    {
-        foreach (get_class_methods(self::class) as $method) {
-            if (!in_array($method, array_keys($this->meta))) {
-                continue;
-            }
-
-            printLine(
-                sprintf("* %s: %s", $method, $this->meta[$method])
-            );
-        }
     }
 
     /**
@@ -73,7 +50,6 @@ class Commands
     public function get_tables_with_heights(): void
     {
         foreach ($this->databaseSpread->getTablesWithHeights() as $tableHighed) {
-
             printLine(
                 sprintf(
                     "%s, height: %s rows", 
