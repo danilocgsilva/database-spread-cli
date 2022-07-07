@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
-use Danilocgsilva\DatabaseSpread\DatabaseStructure\Table;
 
 class Html
 {
@@ -70,8 +69,9 @@ class Html
 
     public function get_fields_html(?string $table): void
     {
+        $singleTableHtml = new SingleTableHtml($this->databaseSpread, $this);
         if (!$table) {
-            $this->printFieldsFromAllTables();
+            $singleTableHtml->printFieldsFromAllTables();
         } else {
             printLine(
                 sprintf(
@@ -79,46 +79,15 @@ class Html
                     $table
                 )
             );
-            $this->printTableDataForSingleTableHtml($table);
+            $singleTableHtml->printTableDataForSingleTableHtml($table);
             printLine("</body>", 1);
             printLine("</html>\n");
         }
     }
 
-    private function printFieldsFromAllTables()
+    public function get_fields_details_html(): void
     {
-        printLine(
-            sprintf(
-                $this->getHeadHtmlTemplate(),
-                $this->databaseSpread->getDatabaseName()
-            )
-        );
-        
-        foreach ($this->databaseSpread->getTables() as $table) {
-            $this->printTableDataForSingleTableHtml($table->getName());
-        }
-
-        printLine("   <ul>\n\n</body>\n</html>\n");
-    }
-
-    private function printTableDataForSingleTableHtml(string $tableName)
-    {
-        printLine(sprintf("<h2>%s</h2>", $tableName), 2);
-
-        printLine("<ul>", 2);
-
-        $fieldTemplate = "<li>%s</li>";
-
-        foreach ($this->databaseSpread->getFields($tableName) as $field) {
-            printLine(
-                sprintf(
-                    $fieldTemplate,
-                    $field->getName()
-                )
-            , 3);
-        }
-
-        printLine("</ul>\n", 2);
+        $this->printFieldsDetailsFromAllTables();
     }
 
     /**
@@ -126,7 +95,7 @@ class Html
      *
      * @return string
      */
-    private function getHeadHtmlTemplate(): string
+    public function getHeadHtmlTemplate(): string
     {
         return <<<EOD
 <!DOCTYPE html>
@@ -139,5 +108,22 @@ class Html
     </head>
     <body>
 EOD;
+    }
+
+    private function printFieldsDetailsFromAllTables()
+    {
+        printLine(
+            sprintf(
+                $this->getHeadHtmlTemplate(),
+                $this->databaseSpread->getDatabaseName()
+            )
+        );
+        
+        $singleTableHtml = new SingleTableHtml($this->databaseSpread, $this);
+        foreach ($this->databaseSpread->getTables() as $table) {
+            $singleTableHtml->printTableDataDetailsForSingleTableHtml($table->getName());
+        }
+
+        printLine("   <ul>\n\n</body>\n</html>\n");
     }
 }

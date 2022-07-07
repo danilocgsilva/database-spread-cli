@@ -23,7 +23,7 @@ class HelpHelper
         printLine("The parameters that you can use:\n");
         
         foreach (self::META as $key => $value) {
-            printLine(sprintf("%s: %s", $key, $value));
+            printLine(sprintf("* %s: %s", $key, $value));
         }
     }
 }
