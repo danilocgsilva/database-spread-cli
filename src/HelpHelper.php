@@ -15,7 +15,8 @@ class HelpHelper
         "get_fields_details" => "Show fields with its details. If needs just to print details from just one table, type a second argumento beign the table name.",
         "get_tables_html" => "Prints html code for tables listing", 
         "get_tables_with_sizes_html" => "Prints the tables with its sizes in html format, thus can be displayied in a browser.", 
-        "get_fields_html" => "Prints the fields from all tables. If a second argument is provided, prints fields just from the table from the second argument."
+        "get_fields_html" => "Prints the fields from all tables. If a second argument is provided, prints fields just from the table from the second argument.",
+        "get_fields_details_html" => "Prints the detailed data from table and fields in html format."
     ];
     
     public static function help(): void
