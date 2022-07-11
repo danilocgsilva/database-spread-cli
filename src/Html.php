@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
+use Danilocgsilva\DatabaseSpread\DatabaseStructure\Table;
 
 class Html
 {
@@ -85,9 +86,13 @@ class Html
         }
     }
 
-    public function get_fields_details_html(): void
+    public function get_fields_details_html(?string $table): void
     {
-        $this->printFieldsDetailsFromAllTables();
+        if ($table) {
+            $this->printFieldsDetailsFromTable($table);
+        } else {
+            $this->printFieldsDetailsFromAllTables();
+        }
     }
 
     /**
@@ -110,6 +115,22 @@ class Html
 EOD;
     }
 
+    private function printFieldsDetailsFromTable(string $tableName)
+    {
+        printLine(
+            sprintf(
+                $this->getHeadHtmlTemplate(),
+                $this->databaseSpread->getDatabaseName()
+            )
+        );
+        
+        $singleTableHtml = new SingleTableHtml($this->databaseSpread, $this);
+        $table = (new Table())->setName($tableName);
+        $singleTableHtml->printTableDataDetailsForSingleTableHtml($table);
+
+        printLine("   <ul>\n\n</body>\n</html>\n");
+    }
+
     private function printFieldsDetailsFromAllTables()
     {
         printLine(
@@ -121,7 +142,7 @@ EOD;
         
         $singleTableHtml = new SingleTableHtml($this->databaseSpread, $this);
         foreach ($this->databaseSpread->getTables() as $table) {
-            $singleTableHtml->printTableDataDetailsForSingleTableHtml($table->getName());
+            $singleTableHtml->printTableDataDetailsForSingleTableHtml($table);
         }
 
         printLine("   <ul>\n\n</body>\n</html>\n");

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
+use Danilocgsilva\DatabaseSpread\DatabaseStructure\Table;
 
 class SingleTableHtml
 {
@@ -63,12 +64,11 @@ class SingleTableHtml
      * @param string $tableName
      * @return void
      */
-    public function printTableDataDetailsForSingleTableHtml(string $tableName): void
+    public function printTableDataDetailsForSingleTableHtml(Table $table): void
     {
+        printLine(sprintf("<h2>%s</h2>", ($tableName = $table->getName())), 2);
         
-        printLine(sprintf("<h2>%s</h2>", $tableName), 2);
-        
-        $this->printSummary();
+        $this->printSummary($table);
 
         printLine("<ul>", 2);
 
@@ -102,11 +102,14 @@ class SingleTableHtml
      *
      * @return void
      */
-    private function printSummary()
+    private function printSummary(Table $table)
     {
+        $this->databaseSpread->hydrateSize($table);
+        $this->databaseSpread->hydrateHeight($table);
+        
         printLine("<ul>");
-        printLine("<li>Rows count: %s</li>");
-        printLine("<li>Size: %s</li>");
+        printLine(sprintf("<li>Rows count: %s</li>", $table->getHeight()));
+        printLine(sprintf("<li>Size: %s</li>", $table->getSize()));
         printLine("</ul>");
     }
 

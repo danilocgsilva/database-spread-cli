@@ -67,6 +67,4 @@ class Formatter
             printLine(" * " . $field->getName());
         }
     }
-
-
 }
