@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
+use Danilocgsilva\DatabaseSpread\DatabaseSpread as HigherDatabaseSpread;
 use Danilocgsilva\DatabaseSpread\DatabaseStructure\Table;
 
 class SingleTableHtml
@@ -104,15 +105,36 @@ class SingleTableHtml
      */
     private function printSummary(Table $table)
     {
-        $this->databaseSpread->hydrateSize($table);
-        $this->databaseSpread->hydrateHeight($table);
+        $higherDatabaseSpread = (
+            new HigherDatabaseSpread($this->databaseSpread->getPdo())
+        )
+            ->setDatabaseName($this->databaseSpread->getDatabaseName());
+        
+        $higherDatabaseSpread->hydrateSize($table);
+        $higherDatabaseSpread->hydrateHeight($table);
+
+        $tableSize = $table->getSize();
+        if ($this->html->getHtmlConverter()) {
+            $htmlConveter = $this->html->getHtmlConverter();
+            $tableSize = $htmlConveter($tableSize);
+        }
         
         printLine("<ul>");
         printLine(sprintf("<li>Rows count: %s</li>", $table->getHeight()));
-        printLine(sprintf("<li>Size: %s</li>", $table->getSize()));
+        printLine(
+            sprintf(
+                "<li>Size: %s</li>", 
+                $tableSize
+            )
+        );
         printLine("</ul>");
     }
 
+    /**
+     * Prints the first section of html page.
+     *
+     * @return void
+     */
     private function printHead(): void
     {
         printLine(

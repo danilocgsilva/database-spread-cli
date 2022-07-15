@@ -28,7 +28,6 @@ try {
 $databaseSpread = new DatabaseSpread($pdo);
 $databaseSpread->setDatabaseName($_ENV['NAME']);
 
-
 if (isset($argv[1])) {
 
     if ($argv[1] === "help") {
@@ -45,6 +44,11 @@ if (isset($argv[1])) {
 
     if (in_array($argv[1], $htmlQuery)) {
         $command = new Html($databaseSpread);
+
+        if ($argv[3] ?? null) {
+            $command->setSizeUnitConverter(getHtmlConverter($argv[3]));
+        }
+        
         match ($argv[1]) {
             "get_tables_html" => $command->{"get_tables_html"}($argv[2] ?? null),
             "get_tables_with_sizes_html" => $command->{"get_tables_with_sizes_html"}($argv[2] ?? null),

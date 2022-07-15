@@ -5,13 +5,26 @@ declare(strict_types=1);
 namespace Danilocgsilva\DatabaseSpreadCli;
 
 use Danilocgsilva\DatabaseSpread\Main as DatabaseSpread;
+use Danilocgsilva\DatabaseSpread\DatabaseSpread as HigherDatabaseSpread;
 use Danilocgsilva\DatabaseSpread\DatabaseStructure\Table;
 
 class Html
 {
+    private $htmlConverter;
+    
     public function __construct(
         private DatabaseSpread $databaseSpread
     ) {}
+
+    public function setSizeUnitConverter(callable $htmlConverter)
+    {
+        $this->htmlConverter = $htmlConverter;
+    }
+
+    public function getHtmlConverter(): ?callable
+    {
+        return $this->htmlConverter;
+    }
 
     /**
      * Prints tables list as static html code for browser display
@@ -86,6 +99,12 @@ class Html
         }
     }
 
+    /**
+     * Throws code to be consumed in browser about some table or all tables
+     *
+     * @param string|null $table
+     * @return void
+     */
     public function get_fields_details_html(?string $table): void
     {
         if ($table) {
@@ -125,7 +144,13 @@ EOD;
         );
         
         $singleTableHtml = new SingleTableHtml($this->databaseSpread, $this);
-        $table = (new Table())->setName($tableName);
+        $table = (new Table())
+            ->setName($tableName);
+
+        $higherDatabaseSpread = new HigherDatabaseSpread($this->databaseSpread->getPdo());
+        $higherDatabaseSpread->setDatabaseName($this->databaseSpread->getDatabaseName());
+            
+        $higherDatabaseSpread->hydrateIsView($table);
         $singleTableHtml->printTableDataDetailsForSingleTableHtml($table);
 
         printLine("   <ul>\n\n</body>\n</html>\n");
